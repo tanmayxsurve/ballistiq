@@ -45,7 +45,30 @@ export default function CareerPathGame() {
       })
     }
 
-    // Demo challenge - in production, fetch from daily_challenges
+    // Load daily challenge
+    loadDailyChallenge()
+  }, [])
+
+  const loadDailyChallenge = async () => {
+    try {
+      const response = await fetch('/api/daily-challenge?game=career-path')
+
+      if (response.ok) {
+        const dailyChallenge = await response.json()
+        const challengeData: CareerPathChallenge = {
+          id: dailyChallenge.id,
+          playerName: dailyChallenge.data.playerName,
+          transfers: dailyChallenge.data.transfers,
+          hints: dailyChallenge.data.hints || [],
+        }
+        setChallenge(challengeData)
+        return
+      }
+    } catch (error) {
+      console.log('No daily challenge, using demo data')
+    }
+
+    // Fallback to demo data
     const demoChallenge: CareerPathChallenge = {
       id: '1',
       playerName: 'Cristiano Ronaldo',
@@ -64,7 +87,7 @@ export default function CareerPathGame() {
     }
 
     setChallenge(demoChallenge)
-  }, [])
+  }
 
   const revealNextTransfer = () => {
     if (challenge && revealedTransfers < challenge.transfers.length) {

@@ -77,6 +77,11 @@ export function Header() {
           <Link href="/leaderboard">
             <Button variant="ghost">Leaderboard</Button>
           </Link>
+          {profile?.is_pro && (
+            <Link href="/admin/challenges">
+              <Button variant="ghost">Admin</Button>
+            </Link>
+          )}
 
           {user ? (
             <>

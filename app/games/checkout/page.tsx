@@ -50,7 +50,24 @@ export default function CheckoutGame() {
       })
     }
 
-    // Demo questions - in production, fetch from daily_challenges
+    // Load daily challenge
+    loadDailyChallenge()
+  }, [])
+
+  const loadDailyChallenge = async () => {
+    try {
+      const response = await fetch('/api/daily-challenge?game=checkout')
+
+      if (response.ok) {
+        const dailyChallenge = await response.json()
+        setQuestions(dailyChallenge.data.questions || [])
+        return
+      }
+    } catch (error) {
+      console.log('No daily challenge, using demo data')
+    }
+
+    // Fallback to demo questions
     const demoQuestions: Question[] = [
       {
         id: '1',
@@ -90,7 +107,7 @@ export default function CheckoutGame() {
     ]
 
     setQuestions(demoQuestions)
-  }, [])
+  }
 
   // Timer countdown
   useEffect(() => {

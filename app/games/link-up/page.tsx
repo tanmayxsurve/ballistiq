@@ -59,7 +59,35 @@ export default function LinkUpGame() {
       })
     }
 
-    // Demo challenge - connect Messi to Ronaldo
+    // Load daily challenge
+    loadDailyChallenge()
+  }, [])
+
+  const loadDailyChallenge = async () => {
+    try {
+      const response = await fetch('/api/daily-challenge?game=link-up')
+
+      if (response.ok) {
+        const dailyChallenge = await response.json()
+        const data = dailyChallenge.data
+
+        const demoChallenge: LinkChallenge = {
+          id: dailyChallenge.id,
+          startPlayer: data.startPlayer,
+          endPlayer: data.endPlayer,
+          solution: data.solution || [],
+          maxLinks: data.maxLinks || 5,
+        }
+
+        setChallenge(demoChallenge)
+        setPlayerChain([demoChallenge.startPlayer])
+        return
+      }
+    } catch (error) {
+      console.log('No daily challenge, using demo data')
+    }
+
+    // Fallback to demo challenge
     const demoChallenge: LinkChallenge = {
       id: '1',
       startPlayer: playerDatabase[0], // Messi
@@ -75,7 +103,7 @@ export default function LinkUpGame() {
 
     setChallenge(demoChallenge)
     setPlayerChain([demoChallenge.startPlayer])
-  }, [])
+  }
 
   const handleInputChange = (value: string) => {
     setCurrentGuess(value)

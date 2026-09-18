@@ -36,7 +36,27 @@ export default function PeckingOrderGame() {
       })
     }
 
-    // Demo data - in production, fetch from daily_challenges
+    // Load daily challenge
+    loadDailyChallenge()
+  }, [])
+
+  const loadDailyChallenge = async () => {
+    try {
+      const response = await fetch('/api/daily-challenge?game=pecking-order')
+
+      if (response.ok) {
+        const challenge = await response.json()
+        const challengePlayers = challenge.data.players || []
+
+        // Shuffle for display
+        setPlayers([...challengePlayers].sort(() => Math.random() - 0.5))
+        return
+      }
+    } catch (error) {
+      console.log('No daily challenge, using demo data')
+    }
+
+    // Fallback to demo data if no daily challenge
     const demoPlayers: Player[] = [
       { id: '1', name: 'Cristiano Ronaldo', stat: 450, team: 'Al Nassr' },
       { id: '2', name: 'Lionel Messi', stat: 672, team: 'Inter Miami' },
@@ -45,9 +65,8 @@ export default function PeckingOrderGame() {
       { id: '5', name: 'Erling Haaland', stat: 178, team: 'Man City' },
     ]
 
-    // Shuffle for display
     setPlayers([...demoPlayers].sort(() => Math.random() - 0.5))
-  }, [])
+  }
 
   const handleDragStart = (e: React.DragEvent, player: Player) => {
     e.dataTransfer.setData('playerId', player.id)
