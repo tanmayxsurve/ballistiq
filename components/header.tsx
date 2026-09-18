@@ -63,23 +63,25 @@ export function Header() {
   }
 
   return (
-    <header className="border-b border-border">
+    <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2">
-          <Trophy className="w-8 h-8 text-primary" />
+        <Link href="/" className="flex items-center gap-2 group">
+          <div className="p-1.5 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
+            <Trophy className="w-6 h-6 text-primary" />
+          </div>
           <span className="text-2xl font-bold">Ballistiq</span>
         </Link>
 
-        <nav className="flex items-center gap-4">
+        <nav className="flex items-center gap-2">
           <Link href="/games">
-            <Button variant="ghost">Games</Button>
+            <Button variant="ghost" className="font-medium">Games</Button>
           </Link>
           <Link href="/leaderboard">
-            <Button variant="ghost">Leaderboard</Button>
+            <Button variant="ghost" className="font-medium">Leaderboard</Button>
           </Link>
           {profile?.is_pro && (
             <Link href="/admin/challenges">
-              <Button variant="ghost">Admin</Button>
+              <Button variant="ghost" className="font-medium">Admin</Button>
             </Link>
           )}
 
@@ -87,14 +89,14 @@ export function Header() {
             <>
               {!profile?.is_pro && (
                 <Link href="/pricing">
-                  <Button variant="default" size="sm" className="gap-2">
+                  <Button variant="default" size="sm" className="gap-2 ml-2 shadow-lg shadow-primary/30 hover:shadow-primary/50 transition-all">
                     <Crown className="w-4 h-4" />
                     Go Pro
                   </Button>
                 </Link>
               )}
               {profile?.is_pro && (
-                <span className="text-sm font-semibold px-3 py-1 rounded-full bg-amber-500/10 text-amber-500 border border-amber-500/20">
+                <span className="text-sm font-bold px-3 py-1.5 ml-2 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg">
                   <Crown className="w-4 h-4 inline mr-1" />
                   PRO
                 </span>
@@ -111,10 +113,10 @@ export function Header() {
           ) : (
             <>
               <Link href="/auth/login">
-                <Button variant="ghost">Login</Button>
+                <Button variant="ghost" className="font-medium">Login</Button>
               </Link>
               <Link href="/auth/signup">
-                <Button>Sign Up</Button>
+                <Button className="ml-2 shadow-md">Sign Up</Button>
               </Link>
             </>
           )}
